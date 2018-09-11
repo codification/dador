@@ -13,22 +13,7 @@ public class GRPCGreeter extends GreeterGrpc.GreeterImplBase {
 
     @Override
     public StreamObserver<HelloRequest> sayHelloBidi(StreamObserver<HelloReply> responseObserver) {
-        return new StreamObserver<HelloRequest>() {
-            @Override
-            public void onNext(HelloRequest value) {
-                responseObserver.onNext(greeter.replyTo(value));
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                responseObserver.onError(t);
-            }
-
-            @Override
-            public void onCompleted() {
-                responseObserver.onCompleted();
-            }
-        };
+        return new TransformingObserver<>(greeter::replyTo, responseObserver);
     }
 
     @Override
