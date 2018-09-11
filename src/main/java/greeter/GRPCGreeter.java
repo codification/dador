@@ -7,14 +7,16 @@ import io.grpc.stub.StreamObserver;
 
 import static java.lang.String.format;
 
-public class DirectGreeter extends GreeterGrpc.GreeterImplBase {
+public class GRPCGreeter extends GreeterGrpc.GreeterImplBase {
+
+    private final Greeter greeter = Greeter.directGreeter();
 
     @Override
     public StreamObserver<HelloRequest> sayHelloBidi(StreamObserver<HelloReply> responseObserver) {
         return new StreamObserver<HelloRequest>() {
             @Override
             public void onNext(HelloRequest value) {
-                responseObserver.onNext(greetMsg(value.getName()));
+                responseObserver.onNext(greeter.replyTo(value));
             }
 
             @Override
@@ -31,15 +33,8 @@ public class DirectGreeter extends GreeterGrpc.GreeterImplBase {
 
     @Override
     public void sayHello(HelloRequest request, StreamObserver<HelloReply> responseObserver) {
-        responseObserver.onNext(greetMsg(request.getName()));
+        responseObserver.onNext(greeter.replyTo(request));
         responseObserver.onCompleted();
     }
 
-    private HelloReply greetMsg(String name) {
-        return HelloReply.newBuilder().setMessage(greet(name)).build();
-    }
-
-    private String greet(String name) {
-        return format("Hello %s!", name);
-    }
 }

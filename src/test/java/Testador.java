@@ -1,13 +1,12 @@
 import dador.GreeterGrpc;
 import dador.HelloReply;
 import dador.HelloRequest;
-import greeter.DirectGreeter;
+import greeter.GRPCGreeter;
 import io.grpc.*;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.internal.testing.StreamRecorder;
 import io.grpc.stub.StreamObserver;
-import io.grpc.stub.StreamObservers;
 import io.grpc.testing.GrpcCleanupRule;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -16,13 +15,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
@@ -47,7 +44,7 @@ public class Testador {
                 .register(InProcessServerBuilder
                         .forName(serverName)
                         .directExecutor()
-                        .addService(new DirectGreeter())
+                        .addService(new GRPCGreeter())
                         .intercept(new ServerInterceptor() {
                             @Override
                             public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> call,
