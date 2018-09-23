@@ -29,6 +29,7 @@ public class GrpcIT {
 
     @Before
     public void asdf() throws IOException {
+
         cleanupRule.register(
                 NettyServerBuilder
                         .forPort(1234)
@@ -44,14 +45,14 @@ public class GrpcIT {
                         .usePlaintext()
                         .build()
         ))
-        .withDeadlineAfter(1, TimeUnit.SECONDS);
+        .withDeadlineAfter(2, TimeUnit.SECONDS);
     }
 
     @Test
     public void itWorks() throws Exception {
         StreamRecorder<HelloReply> responseObserver = StreamRecorder.create();
         greeterStub.sayHello(HelloRequest.newBuilder().setName("hullo").build(), responseObserver);
-        assertTrue(responseObserver.awaitCompletion(2, TimeUnit.SECONDS));
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
         HelloReply reply = responseObserver.firstValue().get();
         assertNotNull(reply);
         assertThat(reply.getMessage(), containsString("hullo"));
