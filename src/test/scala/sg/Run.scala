@@ -2,7 +2,7 @@ package sg
 import io.gatling.app.Gatling
 import io.gatling.core.config.GatlingPropertiesBuilder
 
-object RunTests {
+object Run {
   def main(args: Array[String]) {
     val props = new GatlingPropertiesBuilder
     props.simulationClass(classOf[BasicSimulation].getName)
