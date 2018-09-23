@@ -20,7 +20,7 @@ repositories {
     mavenCentral()
 }
 configurations {
-    gatling
+    gatling.extendsFrom testCompile
 }
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -77,7 +77,7 @@ task gatlingRun(type: JavaExec) {
     new File("${buildDir}/reports/gatling").mkdirs()
     classpath = sourceSets.simulations.runtimeClasspath + configurations.gatling
     main = "io.gatling.app.Gatling"
-    args = ['-s', 'BasicSimulation',
+    args = ['-s', 'GrpcSimulation',
             '-sf', 'simulations/resources',
             '-rf', "${buildDir}/reports/gatling"    ]
 
