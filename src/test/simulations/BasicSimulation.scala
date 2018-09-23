@@ -1,4 +1,3 @@
-package sg
 
 import io.gatling.core.Predef._ // 2
 import io.gatling.http.Predef._
